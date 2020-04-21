@@ -1,10 +1,15 @@
 package com.oakenmoon.recyclableutils;
 
+
+import com.oakenmoon.recyclableutils.blocks.ModBlocks;
+import com.oakenmoon.recyclableutils.blocks.GraniteGenerator;
 import com.oakenmoon.recyclableutils.setup.ClientProxy;
 import com.oakenmoon.recyclableutils.setup.IProxy;
 import com.oakenmoon.recyclableutils.setup.ServerProxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -83,9 +88,17 @@ public class RecyclableUtils
     @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
     public static class RegistryEvents {
         @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
+        public static void onBlocksRegistry(final RegistryEvent.Register<Block> event) {
+            event.getRegistry().register(new GraniteGenerator());
             // register a new block here
             LOGGER.info("HELLO from Register Block");
+        }
+
+        @SubscribeEvent
+        public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
+            event.getRegistry().register(new BlockItem(ModBlocks.GRANITEGENERATOR, new Item.Properties()).setRegistryName("granitegenerator"));
+            // register a new block here
+            LOGGER.info("HELLO from Register Item");
         }
     }
 }
