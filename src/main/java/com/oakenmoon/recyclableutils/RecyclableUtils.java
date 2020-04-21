@@ -1,4 +1,4 @@
-package com.example.recyclableutils;
+package com.oakenmoon.recyclableutils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
