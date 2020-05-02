@@ -1,4 +1,9 @@
 {
+  "item.recyclableutils.simplecoil": "Simple Coil",
+  "item.recyclableutils.fierycoil": "Fiery Coil",
+  "item.recyclableutils.insulatedcoil": "Insulated Coil",
+  "item.recyclableutils.endercoil": "Ender Coil",
+
   "block.recyclableutils.granitegenerator": "Granite Generator",
 
   "_comment": "Creative Tab Name",

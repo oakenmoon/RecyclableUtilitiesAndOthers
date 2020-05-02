@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " se",
+    "scs",
+    "es "
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:end_stone"
+    },
+    "e": {
+      "item": "minecraft:ender_pearl"
+    },
+    "c": {
+      "item": "minecraft:chorus_fruit"
+    }
+  },
+  "result": {
+    "item": "recyclableutils:endercoil"
+  }
+}

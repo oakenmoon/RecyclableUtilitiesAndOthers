@@ -3,6 +3,10 @@ package com.oakenmoon.recyclableutils;
 
 import com.oakenmoon.recyclableutils.blocks.ModBlocks;
 import com.oakenmoon.recyclableutils.blocks.GraniteGenerator;
+import com.oakenmoon.recyclableutils.items.EnderCoil;
+import com.oakenmoon.recyclableutils.items.FieryCoil;
+import com.oakenmoon.recyclableutils.items.InsulatedCoil;
+import com.oakenmoon.recyclableutils.items.SimpleCoil;
 import com.oakenmoon.recyclableutils.setup.ClientProxy;
 import com.oakenmoon.recyclableutils.setup.IProxy;
 import com.oakenmoon.recyclableutils.setup.ModSetup;
@@ -103,7 +107,14 @@ public class RecyclableUtils
         public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
             Item.Properties properties = new Item.Properties()
                     .group(setup.recyclableUtilsMain);
+            //BlockItems
             event.getRegistry().register(new BlockItem(ModBlocks.GRANITEGENERATOR, properties).setRegistryName("granitegenerator"));
+            //ItemItems
+            event.getRegistry().register(new SimpleCoil());
+            event.getRegistry().register(new FieryCoil());
+            event.getRegistry().register(new InsulatedCoil());
+            event.getRegistry().register(new EnderCoil());
+
             // register a new block here
             LOGGER.info("HELLO from Register Item");
         }

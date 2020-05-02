@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "grg",
-    "efe",
+    "cfc",
     "grg"
   ],
   "key": {
@@ -15,8 +15,8 @@
     "r": {
       "item": "minecraft:redstone"
     },
-    "e": {
-      "item": "minecraft:ender_pearl"
+    "c": {
+      "item": "recyclableutils:simplecoil"
     }
   },
   "result": {
