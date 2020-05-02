@@ -5,6 +5,7 @@ import com.oakenmoon.recyclableutils.blocks.ModBlocks;
 import com.oakenmoon.recyclableutils.blocks.GraniteGenerator;
 import com.oakenmoon.recyclableutils.setup.ClientProxy;
 import com.oakenmoon.recyclableutils.setup.IProxy;
+import com.oakenmoon.recyclableutils.setup.ModSetup;
 import com.oakenmoon.recyclableutils.setup.ServerProxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -33,6 +34,8 @@ public class RecyclableUtils
 {
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 
+    public static ModSetup setup = new ModSetup();
+
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -52,6 +55,8 @@ public class RecyclableUtils
 
     private void setup(final FMLCommonSetupEvent event)
     {
+        setup.init();
+        proxy.init();
         /*// some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());*/
@@ -96,7 +101,9 @@ public class RecyclableUtils
 
         @SubscribeEvent
         public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
-            event.getRegistry().register(new BlockItem(ModBlocks.GRANITEGENERATOR, new Item.Properties()).setRegistryName("granitegenerator"));
+            Item.Properties properties = new Item.Properties()
+                    .group(setup.recyclableUtilsMain);
+            event.getRegistry().register(new BlockItem(ModBlocks.GRANITEGENERATOR, properties).setRegistryName("granitegenerator"));
             // register a new block here
             LOGGER.info("HELLO from Register Item");
         }
