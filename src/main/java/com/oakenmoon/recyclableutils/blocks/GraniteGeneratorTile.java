@@ -8,8 +8,10 @@ import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -23,13 +25,13 @@ import static com.oakenmoon.recyclableutils.blocks.ModBlocks.GRANITEGENERATOR_TI
 
 public class GraniteGeneratorTile extends TileEntity implements ITickableTileEntity {
 
-    private ItemStackHandler itemHandler;
+    //I honestly have no idea how lazyoptionals work. But this works, probably through witchcraft.
+    private LazyOptional<IItemHandler> itemHandler = LazyOptional.of(this::createHandler);
 
     //burnableItems set holds all the possibilities for items burnable for power.
     //madeItemFilter determines whether the item filter was already made for that tile entity, so it runs once instead of every tick.
     private boolean madeItemFilter = false;
     private Set<Item> burnableItems;
-
 
 
     public GraniteGeneratorTile() {
@@ -51,43 +53,43 @@ public class GraniteGeneratorTile extends TileEntity implements ITickableTileEnt
     //Item handler stuff
     public void read(CompoundNBT tag) {
         CompoundNBT nbt = tag.getCompound("inventory");
-        getHandler().deserializeNBT(nbt);
+        itemHandler.ifPresent(h -> ((INBTSerializable<CompoundNBT>)h).deserializeNBT(nbt));
         super.read(tag);
     }
 
     public CompoundNBT write(CompoundNBT tag){
-        CompoundNBT nbt = getHandler().serializeNBT();
-        tag.put("inventory", nbt);
+        itemHandler.ifPresent(h -> {
+            CompoundNBT nbt = ((INBTSerializable<CompoundNBT>)h).serializeNBT();
+            tag.put("inventory", nbt);
+        });
         return super.write(tag);
     }
 
-    private ItemStackHandler getHandler(){
-        if(itemHandler == null){
-            itemHandler = new ItemStackHandler(1){
-                //isItemValid may be unnecessary? Kept for probable good practice purposes.
-                @Override
-                public boolean isItemValid(int slot, @Nonnull ItemStack stack){
-                    return !burnableItems.contains(stack.getItem());
-                }
+    private IItemHandler createHandler() {
+        return new ItemStackHandler(1) {
 
-                @Nonnull
-                @Override
-                public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate){
-                    if(!burnableItems.contains(stack.getItem())){
-                        return stack;
-                    }
-                    return super.insertItem(slot, stack, simulate);
+            //isItemValid may be unnecessary? Kept for probable good practice purposes.
+            @Override
+            public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+                return burnableItems.contains(stack.getItem());
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+                if (!burnableItems.contains(stack.getItem())) {
+                    return stack;
                 }
-            };
-        }
-        return itemHandler;
+                return super.insertItem(slot, stack, simulate);
+            }
+        };
     }
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if(cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
-            return LazyOptional.of(() -> (T) getHandler());
+            return itemHandler.cast();
         }
         return super.getCapability(cap, null);
     }
