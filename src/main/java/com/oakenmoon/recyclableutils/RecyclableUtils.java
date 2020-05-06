@@ -1,6 +1,7 @@
 package com.oakenmoon.recyclableutils;
 
 
+import com.oakenmoon.recyclableutils.blocks.GraniteGeneratorContainer;
 import com.oakenmoon.recyclableutils.blocks.GraniteGeneratorTile;
 import com.oakenmoon.recyclableutils.blocks.ModBlocks;
 import com.oakenmoon.recyclableutils.blocks.GraniteGenerator;
@@ -14,10 +15,13 @@ import com.oakenmoon.recyclableutils.setup.ModSetup;
 import com.oakenmoon.recyclableutils.setup.ServerProxy;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -38,6 +42,8 @@ import java.util.stream.Collectors;
 @Mod("recyclableutils")
 public class RecyclableUtils
 {
+    public static final String MODID = "recyclableutils";
+
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
 
     public static ModSetup setup = new ModSetup();
@@ -124,6 +130,14 @@ public class RecyclableUtils
         @SubscribeEvent
         public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event){
             event.getRegistry().register(TileEntityType.Builder.create(GraniteGeneratorTile::new, ModBlocks.GRANITEGENERATOR).build(null).setRegistryName("granitegenerator"));
+        }
+
+        @SubscribeEvent
+        public static void onContainerRegistry(final RegistryEvent.Register<ContainerType<?>> event){
+            event.getRegistry().register(IForgeContainerType.create((windowId, inv, data) ->{
+                BlockPos pos = data.readBlockPos();
+                return new GraniteGeneratorContainer(windowId, pos, RecyclableUtils.proxy.getClientWorld(), inv, RecyclableUtils.proxy.getClientPlayer());
+            }).setRegistryName("granitegenerator"));
         }
     }
 }

@@ -1,5 +1,9 @@
 package com.oakenmoon.recyclableutils.blocks;
 
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -7,6 +11,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -23,7 +29,7 @@ import java.util.Set;
 
 import static com.oakenmoon.recyclableutils.blocks.ModBlocks.GRANITEGENERATOR_TILE;
 
-public class GraniteGeneratorTile extends TileEntity implements ITickableTileEntity {
+public class GraniteGeneratorTile extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
     //I honestly have no idea how lazyoptionals work. But this works, probably through witchcraft.
     private LazyOptional<IItemHandler> itemHandler = LazyOptional.of(this::createHandler);
@@ -49,6 +55,7 @@ public class GraniteGeneratorTile extends TileEntity implements ITickableTileEnt
             madeItemFilter = true;
         }
     }
+
 
     //Item handler stuff
     public void read(CompoundNBT tag) {
@@ -92,5 +99,18 @@ public class GraniteGeneratorTile extends TileEntity implements ITickableTileEnt
             return itemHandler.cast();
         }
         return super.getCapability(cap, null);
+    }
+
+
+    //Container stuff
+    @Override
+    public ITextComponent getDisplayName() {
+        return new StringTextComponent(getType().getRegistryName().getPath());
+    }
+
+    @Nullable
+    @Override
+    public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+        return new GraniteGeneratorContainer(i, pos, world, playerInventory, playerEntity);
     }
 }
