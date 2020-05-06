@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "recyclableutils:block/granitegenerator" }
-    }
+    "facing=north": { "model": "recyclableutils:block/granitegenerator" },
+    "facing=south": { "model": "recyclableutils:block/granitegenerator", "y": 180 },
+    "facing=west":  { "model": "recyclableutils:block/granitegenerator", "y": 270 },
+    "facing=east":  { "model": "recyclableutils:block/granitegenerator", "y": 90 }
+  }
 }

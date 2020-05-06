@@ -1,6 +1,8 @@
 {
-  "parent": "block/cube_all",
+  "parent": "block/orientable",
   "textures": {
-    "all": "recyclableutils:block/granitegenerator"
+    "top": "recyclableutils:block/granitegenerator",
+    "front": "recyclableutils:block/granitegenerator_front",
+    "side": "recyclableutils:block/granitegenerator"
   }
 }

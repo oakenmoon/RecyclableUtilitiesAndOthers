@@ -1,6 +1,7 @@
 package com.oakenmoon.recyclableutils;
 
 
+import com.oakenmoon.recyclableutils.blocks.GraniteGeneratorTile;
 import com.oakenmoon.recyclableutils.blocks.ModBlocks;
 import com.oakenmoon.recyclableutils.blocks.GraniteGenerator;
 import com.oakenmoon.recyclableutils.items.EnderCoil;
@@ -15,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -117,6 +119,11 @@ public class RecyclableUtils
 
             // register a new block here
             LOGGER.info("HELLO from Register Item");
+        }
+
+        @SubscribeEvent
+        public static void onTileEntityRegistry(final RegistryEvent.Register<TileEntityType<?>> event){
+            event.getRegistry().register(TileEntityType.Builder.create(GraniteGeneratorTile::new, ModBlocks.GRANITEGENERATOR).build(null).setRegistryName("granitegenerator"));
         }
     }
 }

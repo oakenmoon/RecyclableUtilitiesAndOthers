@@ -7,12 +7,12 @@ public class ModItems {
     @ObjectHolder("recyclableutils:simplecoil")
     public static SimpleCoil SIMPLECOIL;
 
-    @ObjectHolder("recyclableutils:simplecoil")
+    @ObjectHolder("recyclableutils:fierycoil")
     public static FieryCoil FIERYCOIL;
 
-    @ObjectHolder("recyclableutils:simplecoil")
+    @ObjectHolder("recyclableutils:insulatedcoil")
     public static InsulatedCoil INSULATEDCOIL;
 
-    @ObjectHolder("recyclableutils:simplecoil")
+    @ObjectHolder("recyclableutils:endercoil")
     public static EnderCoil ENDERCOIL;
 }
